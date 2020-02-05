@@ -1,0 +1,25 @@
+.content{
+    width: auto;
+    text-align: center;
+}
+
+table{
+    margin: 0 auto;
+}
+
+table,
+th,
+td {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-collapse: collapse;
+}
+
+th,
+td {
+    width: 10vw;
+}
+
+input[name="content"]{
+    margin-top: 10px;
+    width:25vw;
+}
