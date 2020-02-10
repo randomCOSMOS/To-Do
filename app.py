@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -25,14 +25,24 @@ def hello_world():
 @app.route('/enterTask', methods=['POST'])
 def ok():
     task_content = request.form['content']
-    new_task = Todo(content=task_content)
+    if task_content != "":
+        new_task = Todo(content=task_content)
 
-    try:
-        db.session.add(new_task)
-        db.session.commit()
-        return redirect('/')
-    except:
-        return "There was an issue adding your request"
+        try:
+            db.session.add(new_task)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "There was an issue adding your request"
+    else:
+        error = "Input can't be blank"
+        return redirect(url_for('got_error', err=error))
+
+
+@app.route('/enterTask/<err>')
+def got_error(err):
+    tasks = Todo.query.order_by(Todo.date_created).all()
+    return render_template('index.html', tasks=tasks, error=err)
 
 
 @app.route('/delete/<int:id>')
